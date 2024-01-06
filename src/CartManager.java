@@ -2,12 +2,10 @@ import java.util.List;
 import java.util.Scanner;
 
 public class CartManager {
-    private ProductManager tshirtManager;
-    private ProductManager shirtManager;
-    private UserDAO userService;
-    private  AdminDAO adminService;
-    Screens screens;
-    Scanner scanner;
+    private final ProductManager tshirtManager;
+    private final ProductManager shirtManager;
+    private final UserDAO userService;
+    private final Scanner scanner;
 
     public CartManager(ProductManager tshirtManager, ProductManager shirtManager, UserDAO userService) {
         scanner = new Scanner(System.in);
@@ -15,8 +13,7 @@ public class CartManager {
         this.tshirtManager = tshirtManager;
         this.userService = userService;
     }
-
-    void addToShoppingCart() {
+    public void addToShoppingCart() {
         System.out.println("Eklemek istediğiniz ürünün türünü seçin:");
         System.out.println("1. TShirt");
         System.out.println("2. Gömlek");
@@ -88,7 +85,7 @@ public class CartManager {
             }
         } while (true);
     }
-    void showShoppingCart() {
+    public void showShoppingCart() {
         if (userService.getLoggedInUser().getPurchasedProducts().isEmpty()) {
             System.out.println("Sepetiniz boş.");
         } else {
@@ -108,7 +105,7 @@ public class CartManager {
 
         return totalPrice;
     }
-    void removeFromShoppingCart() {
+    public void removeFromShoppingCart() {
         if (userService.getLoggedInUser().getPurchasedProducts().isEmpty()) {
             System.out.println("Sepetiniz boş.");
         } else {

@@ -3,12 +3,12 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Screens {
-    Scanner scanner = new Scanner(System.in);
-    private UserDAO userService;
-    private AdminDAO adminService;
-    private ProductManager tshirtManager;
-    private ProductManager shirtManager;
-    private CartManager cartManager;
+    Scanner scanner;
+    private final UserDAO userService;
+    private final AdminDAO adminService;
+    private final ProductManager tshirtManager;
+    private final ProductManager shirtManager;
+    private final CartManager cartManager;
 
     public Screens(UserDAO userService, AdminDAO adminService, ProductManager tshirtManager, ProductManager shirtManager,CartManager cartManager) {
         this.userService = userService;
@@ -16,6 +16,7 @@ public class Screens {
         this.tshirtManager = tshirtManager;
         this.shirtManager = shirtManager;
         this.cartManager = cartManager;
+        scanner = new Scanner(System.in);
 
     }
     public void showLoginScreen() {

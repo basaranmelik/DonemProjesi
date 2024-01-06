@@ -4,23 +4,10 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class UserDAO {
-    public List<User> getUsers() {
-        return users;
-    }
-
     private List<User> users;
     private final String filePath = "C:\\Users\\basar\\IdeaProjects\\DonemProjesi\\src\\Users.ser";
     private final Scanner scanner;
     List<Clothes> purchasedProducts;
-
-    public User getLoggedInUser() {
-        return loggedInUser;
-    }
-
-    public void setLoggedInUser(User loggedInUser) {
-        this.loggedInUser = loggedInUser;
-    }
-
     private User loggedInUser;
 
     public UserDAO() {
@@ -30,8 +17,6 @@ public class UserDAO {
 
         loadUsers();
     }
-
-
     public void loadUsers() {
         try (ObjectInputStream objIn = new ObjectInputStream(new FileInputStream(filePath))) {
             users = (List<User>) objIn.readObject();
@@ -39,7 +24,6 @@ public class UserDAO {
             saveUsers(); // Eğer dosya bulunamazsa veya okuma hatası olursa, yeni bir dosya oluştur
         }
     }
-
     public void saveUsers() {
         try (ObjectOutputStream objOut = new ObjectOutputStream(new FileOutputStream(filePath))) {
             objOut.writeObject(users);
@@ -47,7 +31,6 @@ public class UserDAO {
             System.out.println("Dosya bulunamadı veya yazma hatası oluştu.");
         }
     }
-
     private boolean userExists(String username) {
         for (User user : users) {
             if (user.getUsername().equals(username)) {
@@ -56,7 +39,6 @@ public class UserDAO {
         }
         return false;
     }
-
     public User login(String username, String password) {
         for (User user : users) {
             if (user.getUsername().equals(username) && user.getPassword().equals(password)) {
@@ -65,8 +47,6 @@ public class UserDAO {
         }
         return null;
     }
-
-
     public boolean signup(String username, String password) {
         if (!userExists(username)) {
             purchasedProducts = new ArrayList<>();
@@ -76,6 +56,15 @@ public class UserDAO {
             return true;
         }
         return false;
+    }
+    public User getLoggedInUser() {
+        return loggedInUser;
+    }
+    public void setLoggedInUser(User loggedInUser) {
+        this.loggedInUser = loggedInUser;
+    }
+    public List<User> getUsers() {
+        return users;
     }
 
 
