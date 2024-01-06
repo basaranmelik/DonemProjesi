@@ -9,11 +9,16 @@ public class User implements Serializable {
 
     private String username;
     private String password;
+    List<Clothes> purchasedProducts;
 
 
-    public User(String username, String password) {
+    public User(String username, String password,List<Clothes> purchasedProducts) {
         this.username = username;
         this.password = password;
+        this.purchasedProducts= purchasedProducts;
+    }
+    public List<Clothes> getPurchasedProducts() {
+        return purchasedProducts;
     }
 
     public String getUsername() {

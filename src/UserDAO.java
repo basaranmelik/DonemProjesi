@@ -3,10 +3,15 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class UserDAO implements UserService {
+public class UserDAO {
+    public List<User> getUsers() {
+        return users;
+    }
+
     private List<User> users;
     private final String filePath = "C:\\Users\\basar\\Desktop\\Users.ser";
     private final Scanner scanner;
+    List<Clothes> purchasedProducts;
 
     public UserDAO() {
 
@@ -16,7 +21,8 @@ public class UserDAO implements UserService {
         loadUsers();
     }
 
-    private void loadUsers() {
+
+    public void loadUsers() {
         try (ObjectInputStream objIn = new ObjectInputStream(new FileInputStream(filePath))) {
             users = (List<User>) objIn.readObject();
         } catch (IOException | ClassNotFoundException e) {
@@ -24,7 +30,7 @@ public class UserDAO implements UserService {
         }
     }
 
-    private void saveUsers() {
+    public void saveUsers() {
         try (ObjectOutputStream objOut = new ObjectOutputStream(new FileOutputStream(filePath))) {
             objOut.writeObject(users);
         } catch (IOException e) {
@@ -40,7 +46,7 @@ public class UserDAO implements UserService {
         }
         return false;
     }
-    @Override
+
     public User login(String username, String password) {
         for (User user : users) {
             if (user.getUsername().equals(username) && user.getPassword().equals(password)) {
@@ -50,10 +56,11 @@ public class UserDAO implements UserService {
         return null;
     }
 
-    @Override
+
     public boolean signup(String username, String password) {
         if (!userExists(username)) {
-            User newUser = new User(username, password);
+            purchasedProducts = new ArrayList<>();
+            User newUser = new User(username, password,purchasedProducts);
             users.add(newUser);
             saveUsers();
             return true;
@@ -63,4 +70,3 @@ public class UserDAO implements UserService {
 
 
 }
-

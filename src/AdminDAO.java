@@ -1,53 +1,70 @@
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
 
-public class AdminDAO implements AdminService{
-    private ProductManager tshirtManager;
+public class AdminDAO {
+    private final String filePath = "C:\\Users\\basar\\Desktop\\Admins.ser";
+    Scanner scanner = new Scanner(System.in);
+    private UserDAO userService;  // UserDAO sınıfına erişim için
 
-    public AdminDAO() {
-        tshirtManager = new TShirtManager();
-
+    public AdminDAO(UserDAO userService) {
+        this.userService = userService; // UserService eklenmiş
 
     }
-@Override
-    public void adminActions() {
-        Scanner scanner = new Scanner(System.in);
-        int choice;
 
-        do {
-            System.out.println("Admin işlemleri menüsü:");
-            System.out.println("1. TShirt Ekle");
-            System.out.println("2. Tişörtleri Listele");
-            System.out.println("3. Çıkış");
+    public void addUser() {
+        System.out.println("Yeni kullanıcı eklemek için bilgileri girin:");
+        System.out.println("Kullanıcı adı: ");
+        String newUsername = scanner.nextLine();
+        System.out.println("Şifre: ");
+        String newPassword = scanner.nextLine();
 
-            choice = scanner.nextInt();
-            scanner.nextLine(); // Dummy line for clearing the buffer
+        if (userService.signup(newUsername, newPassword)) {
+            System.out.println("Kullanıcı başarıyla eklenmiştir.");
+        } else {
+            System.out.println("Kullanıcı eklenemedi. Kullanıcı adı zaten mevcut.");
+        }
+    }
 
-            switch (choice) {
-                case 1:
+    public void deleteUser() {
+        System.out.println("Silmek istediğiniz kullanıcının kullanıcı adını girin:");
+        String username = scanner.nextLine();
+        Iterator<User> iterator = userService.getUsers().iterator();
+        boolean found = false;
 
-                    tshirtManager.addProduct();
-                    break;
-                case 2:
-                    tshirtManager.listProduct();
-                    break;
-
-                case 3:
-                    System.out.println("Admin işlemleri menüsünden çıkılıyor.");
-                    break;
-                default:
-                    System.out.println("Geçersiz Seçim!");
+        while (iterator.hasNext()) {
+            User user = iterator.next();
+            if (user.getUsername() != null && user.getUsername().equals(username)) {
+                iterator.remove();
+                userService.saveUsers(); // Kullanıcı silindikten sonra dosyaya kaydet
+                System.out.println("Kullanıcı başarıyla silindi.");
+                found = true;
+                break; // Kullanıcı bulundu, döngüden çık
             }
-        } while (choice != 3);
+        }
+
+        if (!found) {
+            System.out.println("Kullanıcı bulunamadı.");
+        }
     }
 
-    @Override
+    public void listUsers(UserDAO userService) {
+        List<User> users = userService.getUsers();
+        if (users.isEmpty()) {
+            System.out.println("Kullanıcı bulunamadı.");
+        } else {
+            for (User user : users) {
+                System.out.println("Kullanıcı adı: " + user.getUsername());
+                // Diğer kullanıcı bilgilerini yazdırabilirsiniz
+            }
+        }
+    }
+
     public boolean isAdmin(User user) {
         return user != null && "admin".equals(user.getUsername()) && "admin".equals(user.getPassword());
     }
-
 
 
 }

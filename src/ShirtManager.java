@@ -3,39 +3,35 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
 
-public class TShirtManager implements ProductManager {
-    private List<TShirt> tShirts;
-    public static final String filePath = "C:\\Users\\basar\\Desktop\\TShirts.ser";
+public class ShirtManager implements ProductManager {
+    private List<Shirt> shirts;
+    public final String filePath = "C:\\Users\\basar\\Desktop\\Shirts.ser";
 
-    public TShirtManager() {
-
-        tShirts = new ArrayList<>();
+    public ShirtManager() {
+        shirts = new ArrayList<>();
         readProductToFile();
     }
-    @Override
-    public List<? extends Clothes> getProducts() {
-        return tShirts;
-    }
+
     @Override
     public void addProduct() {
         Scanner scanner = new Scanner(System.in);
 
-        System.out.println("T-Shirt markasını giriniz: ");
+        System.out.println("Gömlek markasını giriniz: ");
         String brand = scanner.nextLine();
 
-        System.out.println("T-Shirt fiyatını giriniz: ");
+        System.out.println("Gömlek fiyatını giriniz: ");
         double price = scanner.nextDouble();
         scanner.nextLine(); // Dummy line for clearing the buffer
 
-        System.out.println("T-Shirt bedenini giriniz: ");
+        System.out.println("Gömlek bedenini giriniz: ");
         String size = scanner.nextLine();
 
-        System.out.println("T-Shirt rengini giriniz: ");
+        System.out.println("Gömlek rengini giriniz: ");
         String renk = scanner.nextLine();
 
-        TShirt tShirt = new TShirt(brand, price, size, renk);
-        tShirts.add(tShirt);
-        System.out.println("T-Shirt başarıyla eklendi: " + tShirt);
+        Shirt shirt = new Shirt(brand, price, size, renk);
+        shirts.add(shirt);
+        System.out.println("Gömlek başarıyla eklendi: " + shirt);
 
         // Listeyi dosyaya yaz
         writeProductToFile();
@@ -43,8 +39,8 @@ public class TShirtManager implements ProductManager {
 
     @Override
     public void listProduct() {
-        for (TShirt tShirt : tShirts) {
-            System.out.println(tShirt);
+        for (Shirt shirt : shirts) {
+            System.out.println(shirt);
         }
     }
 
@@ -52,12 +48,12 @@ public class TShirtManager implements ProductManager {
     public void deleteProduct() {
         Scanner scanner = new Scanner(System.in);
 
-        if (tShirts.isEmpty()) {
-            System.out.println("Silinecek T-Shirt bulunamadı. Liste boş.");
+        if (shirts.isEmpty()) {
+            System.out.println("Silinecek Gömlek bulunamadı. Liste boş.");
             return;
         }
 
-        System.out.println("Silmek istediğiniz T-Shirt'ün index'ini girin veya 'tumunu' yazarak tüm T-Shirt'leri silin:");
+        System.out.println("Silmek istediğiniz Gömleğin index'ini girin veya 'tumunu' yazarak tüm Gömlek'leri silin:");
 
         String userInput = scanner.nextLine();
 
@@ -65,9 +61,9 @@ public class TShirtManager implements ProductManager {
             System.out.println("Emin misiniz? (E/H)");
             String confirmation = scanner.nextLine();
             if (confirmation.equalsIgnoreCase("E")) {
-                tShirts.clear();
+                shirts.clear();
                 writeProductToFile(); // Tüm T-Shirt'ler silindikten sonra dosyaya kaydet
-                System.out.println("Tüm T-Shirt'ler başarıyla silindi.");
+                System.out.println("Tüm Gömlekler başarıyla silindi.");
             } else {
                 System.out.println("Silme işlemi iptal edildi.");
             }
@@ -78,22 +74,22 @@ public class TShirtManager implements ProductManager {
                     productIndex = Integer.parseInt(userInput);
                     break;
                 } catch (NumberFormatException e) {
-                    System.out.println("Geçersiz bir sayı girdiniz. Lütfen tekrar deneyin veya 'tumunu' yazarak tüm T-Shirt'leri silin.");
+                    System.out.println("Geçersiz bir sayı girdiniz. Lütfen tekrar deneyin veya 'tumunu' yazarak tüm Gömlekleri silin.");
                     userInput = scanner.nextLine();
                 }
             }
 
-            Iterator<TShirt> iterator = tShirts.iterator();
+            Iterator<Shirt> iterator = shirts.iterator();
             int currentIndex = 0;
             boolean found = false;
 
             while (iterator.hasNext()) {
-                TShirt currentTShirt = iterator.next();
+                Shirt currentShirt = iterator.next();
 
                 if (currentIndex == productIndex) {
                     iterator.remove();
                     writeProductToFile(); // Ürün silindikten sonra dosyaya kaydet
-                    System.out.println("T-Shirt başarıyla silindi: " + currentTShirt);
+                    System.out.println("T-Shirt başarıyla silindi: " + currentShirt);
                     found = true;
                     break;
                 }
@@ -109,14 +105,20 @@ public class TShirtManager implements ProductManager {
 
     @Override
     public void writeProductToFile() {
-        FileUtil.writeToFile(tShirts, filePath);
+        FileUtil.writeToFile(shirts, filePath);
     }
 
+    @Override
     public void readProductToFile() {
-        List<TShirt> readTShirts = (List<TShirt>) FileUtil.readFromFile(filePath);
+        List<Shirt> readShirts = (List<Shirt>) FileUtil.readFromFile(filePath);
 
-        if (readTShirts != null) {
-            tShirts = readTShirts;
+        if (readShirts != null) {
+            shirts = readShirts;
         }
+    }
+
+    @Override
+    public List<? extends Clothes> getProducts() {
+        return shirts;
     }
 }

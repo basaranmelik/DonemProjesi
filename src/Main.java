@@ -1,10 +1,12 @@
 public class Main {
     public static void main(String[] args) {
-    ProductManager productManager;
-    UserService userService = new UserDAO();
-    AdminService adminService = new AdminDAO();
-    Screens screen = new Screens(userService,adminService);
-    screen.showLoginScreen();
+    ProductManager tShirtManager = new TShirtManager();
+    ProductManager shirtManager = new ShirtManager();
+    UserDAO userDAO = new UserDAO();
+    AdminDAO adminDAO = new AdminDAO(userDAO);
+    Screens screens = new Screens(userDAO,adminDAO,tShirtManager,shirtManager);
+
+    screens.showLoginScreen();
 
     }
 }
