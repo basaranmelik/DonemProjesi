@@ -5,13 +5,20 @@ import java.util.Scanner;
 
 public class ShirtManager implements ProductManager {
     private List<Shirt> shirts;
-    public final String filePath = "C:\\Users\\basar\\Desktop\\Shirts.ser";
+    public final String filePath = "C:\\Users\\basar\\IdeaProjects\\DonemProjesi\\src\\Shirts.ser";
 
     public ShirtManager() {
         shirts = new ArrayList<>();
         readProductToFile();
     }
-
+    @Override
+    public void decreaseStock(int productIndex, int i) {
+        if (productIndex >= 0 && productIndex < shirts.size()) {
+            Shirt selectedShirt = shirts.get(productIndex);
+            selectedShirt.decreaseStock(i); // decreaseStock metodu olmalıdır
+            // Diğer işlemler...
+        }
+    }
     @Override
     public void addProduct() {
         Scanner scanner = new Scanner(System.in);
@@ -26,24 +33,31 @@ public class ShirtManager implements ProductManager {
         System.out.println("Gömlek bedenini giriniz: ");
         String size = scanner.nextLine();
 
-        System.out.println("Gömlek rengini giriniz: ");
-        String renk = scanner.nextLine();
+        System.out.println("Gömlek desenini giriniz: ");
+        String pattern = scanner.nextLine();
 
-        Shirt shirt = new Shirt(brand, price, size, renk);
+        System.out.println("Gömlek kumaş tipini giriniz:");
+        String fabric = scanner.nextLine();
+
+        System.out.println("Kaç adet eklemek istediğinizi giriniz:");
+        int stock = scanner.nextInt();
+
+        Shirt shirt = new Shirt(brand, price, size, pattern,fabric,stock);
         shirts.add(shirt);
         System.out.println("Gömlek başarıyla eklendi: " + shirt);
 
         // Listeyi dosyaya yaz
         writeProductToFile();
     }
-
     @Override
     public void listProduct() {
+        int index = 1;
+
         for (Shirt shirt : shirts) {
-            System.out.println(shirt);
+            System.out.println("Gömlek ID: " + index + " - " + shirt);
+            index++;
         }
     }
-
     @Override
     public void deleteProduct() {
         Scanner scanner = new Scanner(System.in);
@@ -102,12 +116,10 @@ public class ShirtManager implements ProductManager {
             }
         }
     }
-
     @Override
     public void writeProductToFile() {
         FileUtil.writeToFile(shirts, filePath);
     }
-
     @Override
     public void readProductToFile() {
         List<Shirt> readShirts = (List<Shirt>) FileUtil.readFromFile(filePath);
@@ -116,7 +128,6 @@ public class ShirtManager implements ProductManager {
             shirts = readShirts;
         }
     }
-
     @Override
     public List<? extends Clothes> getProducts() {
         return shirts;

@@ -4,7 +4,8 @@ public class Main {
     ProductManager shirtManager = new ShirtManager();
     UserDAO userDAO = new UserDAO();
     AdminDAO adminDAO = new AdminDAO(userDAO);
-    Screens screens = new Screens(userDAO,adminDAO,tShirtManager,shirtManager);
+    CartManager cartManager = new CartManager(tShirtManager,shirtManager,userDAO);
+    Screens screens = new Screens(userDAO,adminDAO,tShirtManager,shirtManager,cartManager);
 
     screens.showLoginScreen();
 

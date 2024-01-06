@@ -9,9 +9,19 @@ public class UserDAO {
     }
 
     private List<User> users;
-    private final String filePath = "C:\\Users\\basar\\Desktop\\Users.ser";
+    private final String filePath = "C:\\Users\\basar\\IdeaProjects\\DonemProjesi\\src\\Users.ser";
     private final Scanner scanner;
     List<Clothes> purchasedProducts;
+
+    public User getLoggedInUser() {
+        return loggedInUser;
+    }
+
+    public void setLoggedInUser(User loggedInUser) {
+        this.loggedInUser = loggedInUser;
+    }
+
+    private User loggedInUser;
 
     public UserDAO() {
 

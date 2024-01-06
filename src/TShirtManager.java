@@ -5,12 +5,20 @@ import java.util.Scanner;
 
 public class TShirtManager implements ProductManager {
     private List<TShirt> tShirts;
-    public static final String filePath = "C:\\Users\\basar\\Desktop\\TShirts.ser";
+    public static final String filePath = "C:\\Users\\basar\\IdeaProjects\\DonemProjesi\\src\\TShirts.ser";
 
     public TShirtManager() {
 
         tShirts = new ArrayList<>();
         readProductToFile();
+    }
+    @Override
+    public void decreaseStock(int productIndex, int i) {
+        if (productIndex >= 0 && productIndex < tShirts.size()) {
+            TShirt selectedTShirt = tShirts.get(productIndex);
+            selectedTShirt.decreaseStock(i); // decreaseStock metodu olmalıdır
+            // Diğer işlemler...
+        }
     }
     @Override
     public List<? extends Clothes> getProducts() {
@@ -31,23 +39,30 @@ public class TShirtManager implements ProductManager {
         String size = scanner.nextLine();
 
         System.out.println("T-Shirt rengini giriniz: ");
-        String renk = scanner.nextLine();
+        String color = scanner.nextLine();
 
-        TShirt tShirt = new TShirt(brand, price, size, renk);
+        System.out.println("T-Shirt yaka tipini giriniz: ");
+        String neck = scanner.nextLine();
+
+        System.out.println("Kaç adet eklemek istediğinizi giriniz:");
+        int stock = scanner.nextInt();
+
+        TShirt tShirt = new TShirt(brand, price, size, color, neck, stock);
         tShirts.add(tShirt);
         System.out.println("T-Shirt başarıyla eklendi: " + tShirt);
 
         // Listeyi dosyaya yaz
         writeProductToFile();
     }
-
     @Override
     public void listProduct() {
+        int index = 1;
+
         for (TShirt tShirt : tShirts) {
-            System.out.println(tShirt);
+            System.out.println("TShirt ID: " + index + " - " + tShirt);
+            index++;
         }
     }
-
     @Override
     public void deleteProduct() {
         Scanner scanner = new Scanner(System.in);
@@ -106,12 +121,11 @@ public class TShirtManager implements ProductManager {
             }
         }
     }
-
     @Override
     public void writeProductToFile() {
         FileUtil.writeToFile(tShirts, filePath);
     }
-
+    @Override
     public void readProductToFile() {
         List<TShirt> readTShirts = (List<TShirt>) FileUtil.readFromFile(filePath);
 

@@ -8,13 +8,14 @@ public class Screens {
     private AdminDAO adminService;
     private ProductManager tshirtManager;
     private ProductManager shirtManager;
-    private User loggedInUser;
+    private CartManager cartManager;
 
-    public Screens(UserDAO userService, AdminDAO adminService, ProductManager tshirtManager, ProductManager shirtManager) {
+    public Screens(UserDAO userService, AdminDAO adminService, ProductManager tshirtManager, ProductManager shirtManager,CartManager cartManager) {
         this.userService = userService;
         this.adminService = adminService;
         this.tshirtManager = tshirtManager;
         this.shirtManager = shirtManager;
+        this.cartManager = cartManager;
 
     }
     public void showLoginScreen() {
@@ -33,10 +34,10 @@ public class Screens {
                     String loginUsername = scanner.nextLine();
                     System.out.println("Şifrenizi giriniz:");
                     String loginPassword = scanner.nextLine();
-                    loggedInUser = userService.login(loginUsername, loginPassword);
+                    userService.setLoggedInUser(userService.login(loginUsername, loginPassword));
 
-                    if (loggedInUser != null) {
-                        if (adminService.isAdmin(loggedInUser)) {
+                    if (userService.getLoggedInUser() != null) {
+                        if (adminService.isAdmin(userService.getLoggedInUser())) {
                             System.out.println("Admin giriş yaptı.");
                             showAdminScreen();
                         } else {
@@ -85,19 +86,17 @@ public class Screens {
             switch (choice) {
                 case 1:
                     tshirtManager.listProduct();
+                    shirtManager.listProduct();
                     break;
-
                 case 2:
-                    addToShoppingCart();
+                    cartManager.addToShoppingCart();
                     break;
-
                 case 3:
-                    showShoppingCart();
+                    cartManager.showShoppingCart();
                     waitForEnter();
                     break;
-
                 case 4:
-                    removeFromShoppingCart();
+                    cartManager.removeFromShoppingCart();
                     break;
                 case 5:
                     System.out.println("Çıkış Yapılıyor...");
@@ -163,89 +162,6 @@ public class Screens {
                     System.out.println("Geçersiz Seçim!");
             }
         } while (choice != 1111);
-    }
-    private void addToShoppingCart() {
-        System.out.println("Eklemek istediğiniz ürünün türünü seçin:");
-        System.out.println("1. TShirt");
-        System.out.println("2. Gömlek");
-
-        int productTypeChoice = scanner.nextInt();
-        scanner.nextLine(); // Buffer'ı temizlemek için dummy satır
-
-        if (productTypeChoice == 1) {
-            // TShirt'i sepete ekleme
-            addToShoppingCart(tshirtManager.getProducts());
-        } else if (productTypeChoice == 2) {
-            // Gömlek'i sepete ekleme
-            addToShoppingCart(shirtManager.getProducts());
-        } else {
-            System.out.println("Geçersiz ürün türü seçimi.");
-        }
-        userService.saveUsers();
-    }
-    private void addToShoppingCart(List<? extends Clothes> products) {
-        do {
-            System.out.println("Eklemek istediğiniz ürünün index'ini girin veya 'q' tuşuna basarak çıkın:");
-            String input = scanner.nextLine();
-
-            if (input.equalsIgnoreCase("q")) {
-                return; // Çıkış yap
-            }
-
-            try {
-                int productIndex = Integer.parseInt(input);
-
-                if (productIndex >= 0 && productIndex < products.size()) {
-                    Clothes selectedProduct = products.get(productIndex);
-                    loggedInUser.getPurchasedProducts().add(selectedProduct);
-                    System.out.println("Ürün sepete eklendi: " + selectedProduct);
-                } else {
-                    System.out.println("Geçersiz ürün index'i.");
-                }
-            } catch (NumberFormatException e) {
-                System.out.println("Geçersiz giriş. Lütfen bir sayı veya 'q' girin.");
-            }
-        } while (true);
-    }
-    private void showShoppingCart() {
-        if (loggedInUser.getPurchasedProducts().isEmpty()) {
-            System.out.println("Sepetiniz boş.");
-        } else {
-            System.out.println("Sepetinizdeki Ürünler:");
-            for (Clothes product : loggedInUser.getPurchasedProducts()) {
-                System.out.println(product);
-            }
-        }
-    }
-    private void removeFromShoppingCart() {
-        if (loggedInUser.getPurchasedProducts().isEmpty()) {
-            System.out.println("Sepetiniz boş.");
-        } else {
-            System.out.println("Sepetinizdeki Ürünleri Listele:");
-            showShoppingCart();
-
-            do {
-                System.out.println("Silmek istediğiniz ürünün index'ini girin veya 'q' tuşuna basarak çıkın:");
-                String input = scanner.nextLine();
-
-                if (input.equalsIgnoreCase("q")) {
-                    return; // Çıkış yap
-                }
-                try {
-                    int productIndex = Integer.parseInt(input);
-
-                    if (productIndex >= 0 && productIndex < loggedInUser.getPurchasedProducts().size()) {
-                        Clothes removedProduct = loggedInUser.getPurchasedProducts().remove(productIndex);
-                        System.out.println("Ürün sepetten kaldırıldı: " + removedProduct);
-                        userService.saveUsers();
-                    } else {
-                        System.out.println("Geçersiz ürün index'i.");
-                    }
-                } catch (NumberFormatException e) {
-                    System.out.println("Geçersiz giriş. Lütfen bir sayı veya 'q' girin.");
-                }
-            } while (true);
-        }
     }
     private void waitForEnter() {
 

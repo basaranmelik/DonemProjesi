@@ -12,4 +12,5 @@ public interface ProductManager {
     void readProductToFile();
 
     List<? extends Clothes> getProducts();
+    void decreaseStock(int productIndex, int i);
 }

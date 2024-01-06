@@ -4,20 +4,26 @@ import java.util.List;
 import java.util.Scanner;
 
 class TShirt extends Clothes {
-    private String size;
-    private String renk;
+    private String color;
+    private String neck;
 
 
-    public TShirt(String brand, double price, String size,String renk) {
-        super(brand, price);
-        this.size = size;
-        this.renk = renk;
-
+    public TShirt(String brand, double price, String size, String color, String neck, int stock) {
+        super(brand, price, size, stock);
+        this.color = color;
+        this.neck = neck;
     }
-
-
     @Override
     public String toString() {
-        return "TShirt [brand=" + getBrand() + ", price=" + getPrice() + ", size=" + size + "]";
+        return "TShirt {" +
+                "Marka:" + getBrand() +
+                ", Fiyat:" + getPrice() +
+                ", Beden:" + getSize() +
+                ", Renk:" + color +
+                ", Yaka Tipi:" + neck +
+                ", Stok:" + getStock() +
+                '}';
     }
+
+
 }
