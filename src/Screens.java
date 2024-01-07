@@ -1,5 +1,4 @@
-import java.util.ArrayList;
-import java.util.List;
+
 import java.util.Scanner;
 
 public class Screens {
@@ -27,7 +26,7 @@ public class Screens {
             System.out.println("2. Kayıt Ol");
             System.out.println("3. Çıkış Yap");
             choice = scanner.nextInt();
-            scanner.nextLine(); // Dummy line for clearing the buffer
+            scanner.nextLine();
 
             switch (choice) {
                 case 1:
@@ -82,7 +81,7 @@ public class Screens {
             System.out.println("5. Çıkış");
 
             int choice = scanner.nextInt();
-            scanner.nextLine(); // Dummy line for clearing the buffer
+            scanner.nextLine();
 
             switch (choice) {
                 case 1:
@@ -108,11 +107,8 @@ public class Screens {
         } while (true);
     }
     public void showAdminScreen() {
-
         int choice;
-
         do {
-
             System.out.println("Admin işlemleri menüsü:");
             System.out.println("1. Kullanıcı Ekle");
             System.out.println("2. Kullanıcı Sil");
@@ -123,10 +119,10 @@ public class Screens {
             System.out.println("7. Gömlek Ekle");
             System.out.println("8. Gömlek Listele");
             System.out.println("9. Gömlek Sil");
-
+            System.out.println("10. Çıkış");
 
             choice = scanner.nextInt();
-            scanner.nextLine(); // Dummy line for clearing the buffer
+            scanner.nextLine();
 
             switch (choice) {
                 case 1:
@@ -159,10 +155,12 @@ public class Screens {
                 case 9:
                     shirtManager.deleteProduct();
                     break;
+                case 10:
+                    return;
                 default:
                     System.out.println("Geçersiz Seçim!");
             }
-        } while (choice != 1111);
+        } while (true);
     }
     private void waitForEnter() {
 

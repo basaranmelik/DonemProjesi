@@ -1,17 +1,15 @@
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
 
 public class AdminDAO {
-    private final String filePath = "C:\\Users\\basar\\Desktop\\Admins.ser";
-    Scanner scanner = new Scanner(System.in);
-    private UserDAO userService;  // UserDAO sınıfına erişim için
+    Scanner scanner;
+    private final UserDAO userService;  // UserDAO sınıfına erişim için
 
     public AdminDAO(UserDAO userService) {
         this.userService = userService; // UserService eklenmiş
-
+        scanner = new Scanner(System.in);
     }
 
     public void addUser() {
@@ -29,14 +27,15 @@ public class AdminDAO {
     }
 
     public void deleteUser() {
+        listUsers(userService);
         System.out.println("Silmek istediğiniz kullanıcının kullanıcı adını girin:");
         String username = scanner.nextLine();
         Iterator<User> iterator = userService.getUsers().iterator();
         boolean found = false;
 
         while (iterator.hasNext()) {
-            User user = iterator.next();
-            if (user.getUsername() != null && user.getUsername().equals(username)) {
+            User user = iterator.next(); // users listesini tek tek gez
+            if (user.username() != null && user.username().equals(username)) {
                 iterator.remove();
                 userService.saveUsers(); // Kullanıcı silindikten sonra dosyaya kaydet
                 System.out.println("Kullanıcı başarıyla silindi.");
@@ -56,14 +55,13 @@ public class AdminDAO {
             System.out.println("Kullanıcı bulunamadı.");
         } else {
             for (User user : users) {
-                System.out.println("Kullanıcı adı: " + user.getUsername());
-                // Diğer kullanıcı bilgilerini yazdırabilirsiniz
+                System.out.println("Kullanıcı adı: " + user.username());
             }
         }
     }
 
     public boolean isAdmin(User user) {
-        return user != null && "admin".equals(user.getUsername()) && "admin".equals(user.getPassword());
+        return user != null && "admin".equals(user.username()) && "admin".equals(user.password());
     }
 
 

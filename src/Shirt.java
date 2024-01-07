@@ -1,8 +1,8 @@
 import java.io.Serializable;
 
 public class Shirt extends Clothes implements Serializable {
-    private String pattern;
-    private String fabric;
+    private final String pattern;
+    private final String fabric;
 
     public Shirt(String brand, double price, String size, String pattern, String fabric) {
         super(brand, price, size);

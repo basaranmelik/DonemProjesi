@@ -1,11 +1,7 @@
-import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
 
-class TShirt extends Clothes {
-    private String color;
-    private String neck;
+public class TShirt extends Clothes {
+    private final String color;
+    private final String neck;
 
 
     public TShirt(String brand, double price, String size, String color, String neck) {

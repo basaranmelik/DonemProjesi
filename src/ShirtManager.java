@@ -4,23 +4,33 @@ import java.util.List;
 import java.util.Scanner;
 
 public class ShirtManager implements ProductManager {
+    private final Scanner scanner;
     private List<Shirt> shirts;
     public final String filePath = "C:\\Users\\basar\\IdeaProjects\\DonemProjesi\\src\\Shirts.ser";
 
     public ShirtManager() {
+        scanner = new Scanner(System.in);
         shirts = new ArrayList<>();
         readProductToFile();
     }
+
     @Override
     public void addProduct() {
-        Scanner scanner = new Scanner(System.in);
+        double price = 0.0;
+        boolean validPrice = false;
 
         System.out.println("Gömlek markasını giriniz: ");
         String brand = scanner.nextLine();
 
         System.out.println("Gömlek fiyatını giriniz: ");
-        double price = scanner.nextDouble();
-        scanner.nextLine(); // Dummy line for clearing the buffer
+        while (!validPrice) {
+            try {
+                price = InvalidPriceException.validatePrice(scanner);
+                validPrice = true;
+            } catch (InvalidPriceException e) {
+                System.out.println(e.getMessage());
+            }
+        }
 
         System.out.println("Gömlek bedenini giriniz: ");
         String size = scanner.nextLine();
@@ -31,13 +41,14 @@ public class ShirtManager implements ProductManager {
         System.out.println("Gömlek kumaş tipini giriniz:");
         String fabric = scanner.nextLine();
 
-        Shirt shirt = new Shirt(brand, price, size, pattern,fabric);
+        Shirt shirt = new Shirt(brand, price, size, pattern, fabric);
         shirts.add(shirt);
         System.out.println("Gömlek başarıyla eklendi: " + shirt);
 
         // Listeyi dosyaya yaz
         writeProductToFile();
     }
+
     @Override
     public void listProduct() {
         int index = 1;
@@ -47,6 +58,7 @@ public class ShirtManager implements ProductManager {
             index++;
         }
     }
+
     @Override
     public void deleteProduct() {
         Scanner scanner = new Scanner(System.in);
@@ -105,10 +117,13 @@ public class ShirtManager implements ProductManager {
             }
         }
     }
+
     @Override
     public void writeProductToFile() {
         FileUtil.writeToFile(shirts, filePath);
     }
+
+    @SuppressWarnings("unchecked")
     @Override
     public void readProductToFile() {
         List<Shirt> readShirts = (List<Shirt>) FileUtil.readFromFile(filePath);
@@ -117,8 +132,10 @@ public class ShirtManager implements ProductManager {
             shirts = readShirts;
         }
     }
+
     @Override
     public List<? extends Clothes> getProducts() {
         return shirts;
     }
+
 }
