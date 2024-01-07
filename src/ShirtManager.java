@@ -12,14 +12,6 @@ public class ShirtManager implements ProductManager {
         readProductToFile();
     }
     @Override
-    public void decreaseStock(int productIndex, int i) {
-        if (productIndex >= 0 && productIndex < shirts.size()) {
-            Shirt selectedShirt = shirts.get(productIndex);
-            selectedShirt.decreaseStock(i); // decreaseStock metodu olmalıdır
-            // Diğer işlemler...
-        }
-    }
-    @Override
     public void addProduct() {
         Scanner scanner = new Scanner(System.in);
 
@@ -39,10 +31,7 @@ public class ShirtManager implements ProductManager {
         System.out.println("Gömlek kumaş tipini giriniz:");
         String fabric = scanner.nextLine();
 
-        System.out.println("Kaç adet eklemek istediğinizi giriniz:");
-        int stock = scanner.nextInt();
-
-        Shirt shirt = new Shirt(brand, price, size, pattern,fabric,stock);
+        Shirt shirt = new Shirt(brand, price, size, pattern,fabric);
         shirts.add(shirt);
         System.out.println("Gömlek başarıyla eklendi: " + shirt);
 

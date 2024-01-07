@@ -13,14 +13,6 @@ public class TShirtManager implements ProductManager {
         readProductToFile();
     }
     @Override
-    public void decreaseStock(int productIndex, int i) {
-        if (productIndex >= 0 && productIndex < tShirts.size()) {
-            TShirt selectedTShirt = tShirts.get(productIndex);
-            selectedTShirt.decreaseStock(i); // decreaseStock metodu olmalıdır
-            // Diğer işlemler...
-        }
-    }
-    @Override
     public List<? extends Clothes> getProducts() {
         return tShirts;
     }
@@ -44,10 +36,7 @@ public class TShirtManager implements ProductManager {
         System.out.println("T-Shirt yaka tipini giriniz: ");
         String neck = scanner.nextLine();
 
-        System.out.println("Kaç adet eklemek istediğinizi giriniz:");
-        int stock = scanner.nextInt();
-
-        TShirt tShirt = new TShirt(brand, price, size, color, neck, stock);
+        TShirt tShirt = new TShirt(brand, price, size, color, neck);
         tShirts.add(tShirt);
         System.out.println("T-Shirt başarıyla eklendi: " + tShirt);
 

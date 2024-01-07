@@ -4,8 +4,8 @@ public class Shirt extends Clothes implements Serializable {
     private String pattern;
     private String fabric;
 
-    public Shirt(String brand, double price, String size, String pattern, String fabric, int stock) {
-        super(brand, price, size, stock);
+    public Shirt(String brand, double price, String size, String pattern, String fabric) {
+        super(brand, price, size);
         this.pattern = pattern;
         this.fabric = fabric;
     }
@@ -17,7 +17,6 @@ public class Shirt extends Clothes implements Serializable {
                 ", Beden:" + getSize() +
                 ", Desen:" + pattern +
                 ", Kumaş:" + fabric +
-                ", Stok:" + getStock() +
                 '}';
     }
 }

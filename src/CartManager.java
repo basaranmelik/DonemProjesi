@@ -47,36 +47,11 @@ public class CartManager {
                 if (productIndex >= 0 && productIndex < products.size()) {
                     Clothes selectedProduct = products.get(productIndex);
 
-                    // Stok kontrolü
-                    int availableStock = selectedProduct.getStock();
-                    if (availableStock > 0) {
-                        System.out.println("Üründen kaç adet eklemek istiyorsunuz? (Mevcut stok: " + availableStock + ")");
-                        int quantityToAdd = scanner.nextInt();
-                        scanner.nextLine(); // Dummy line for clearing the buffer
+                    userService.getLoggedInUser().getPurchasedProducts().add(selectedProduct);
+                    userService.saveUsers();
 
-                        if (quantityToAdd > 0 && quantityToAdd <= availableStock) {
-                            int kalanStok = availableStock - quantityToAdd;
-                            selectedProduct.setStock(quantityToAdd);
-                            userService.getLoggedInUser().getPurchasedProducts().add(selectedProduct);
-                            userService.saveUsers();
+                    System.out.println("Ürün sepete eklendi: " + selectedProduct);
 
-
-                            // Güncellenen stok bilgisini dosyaya yazma
-                            if (selectedProduct instanceof TShirt) {
-                                tshirtManager.getProducts().get(productIndex).setStock(kalanStok);
-                                tshirtManager.writeProductToFile();
-                            } else if (selectedProduct instanceof Shirt) {
-                                shirtManager.writeProductToFile();
-                            }
-
-                            System.out.println(quantityToAdd + " adet ürün sepete eklendi: " + selectedProduct);
-
-                        } else {
-                            System.out.println("Geçersiz adet girişi veya stoktan fazla ürün eklemeye çalıştınız.");
-                        }
-                    } else {
-                        System.out.println("Üzgünüz, bu ürün stokta bulunmamaktadır.");
-                    }
                 } else {
                     System.out.println("Geçersiz ürün index'i.");
                 }

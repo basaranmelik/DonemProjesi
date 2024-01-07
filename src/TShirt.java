@@ -8,8 +8,8 @@ class TShirt extends Clothes {
     private String neck;
 
 
-    public TShirt(String brand, double price, String size, String color, String neck, int stock) {
-        super(brand, price, size, stock);
+    public TShirt(String brand, double price, String size, String color, String neck) {
+        super(brand, price, size);
         this.color = color;
         this.neck = neck;
     }
@@ -21,7 +21,6 @@ class TShirt extends Clothes {
                 ", Beden:" + getSize() +
                 ", Renk:" + color +
                 ", Yaka Tipi:" + neck +
-                ", Stok:" + getStock() +
                 '}';
     }
 
